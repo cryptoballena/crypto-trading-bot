@@ -30,6 +30,7 @@
             "secret": null
         },
         "ftx": {
+            // "account": "useyoursubaccounthere",
             "key": null,
             "secret": null
         }
