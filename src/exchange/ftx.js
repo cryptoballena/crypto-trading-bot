@@ -42,8 +42,14 @@ module.exports = class Ftx {
     this.exchange = null;
 
     const ccxtClient = (this.ccxtClient = new ccxt.ftx({
-      apiKey: config.key,
-      secret: config.secret
+          
+          'headers': {
+                'FTX-SUBACCOUNT': config.account,
+          },
+          
+          apiKey: config.key,
+          secret: config.secret
+
     }));
 
     // conditional orders are not supported by ccxt
@@ -114,11 +120,17 @@ module.exports = class Ftx {
           .update(`${time}websocket_login`)
           .digest('hex');
 
-        ws.send(JSON.stringify({ op: 'login', args: { key: config.key, sign: signature, time: time } }));
+        ws.send(JSON.stringify({ op: 'login', args: { key: config.key, sign: signature, time: time, subaccount: config.account } }));
 
         me.exchange = new ccxt.ftx({
+          
+          'headers': {
+                'FTX-SUBACCOUNT': config.account,
+          },
+          
           apiKey: config.key,
           secret: config.secret
+          
         });
 
         setInterval(
